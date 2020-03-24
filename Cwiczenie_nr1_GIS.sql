@@ -264,6 +264,14 @@ WHERE LENGTH(nazwisko) =
               FROM pracownicy);
 
 --zadanie 9
-
+SELECT 'Pracownik '::text || pracownicy.imie || ' ' || pracownicy.nazwisko || ' w dniu '::text 
+|| wynagrodzenie."data" || ' otrzymal pensje calkowita na kwote '::text || (pensja_stanowisko.kwota+premia.kwota)::text || 
+' gdzie wynagrodzenie zasadnicze wynosilo: ' || pensja_stanowisko.kwota::text || ', premia: ' || premia.kwota::text || '.' 
+as "Raport koncowy"
+FROM pracownicy, wynagrodzenie, pensja_stanowisko, premia
+where pracownicy.id_pracownika = wynagrodzenie.pracownicy_id_pracownika 
+and pensja_stanowisko.id_pensji = wynagrodzenie.pensja_stanowisko_id_pensji
+and wynagrodzenie.premia_id_premii = premia.id_premii 
+group by pracownicy.imie, pracownicy.nazwisko, wynagrodzenie.data, pensja_stanowisko.kwota, premia.kwota;
 
 
