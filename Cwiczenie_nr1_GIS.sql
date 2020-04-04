@@ -16,9 +16,9 @@ GRANT SELECT ON ALL TABLES IN schema firma TO ksiegowosc;
 CREATE TABLE pracownicy 
 (
     id_pracownika int  NOT NULL,
-    imie char(30)  NOT NULL,
-    nazwisko char(50)  NOT NULL,
-    adres char(50)  NOT NULL,
+    imie varchar(30)  NOT NULL,
+    nazwisko varchar(50)  NOT NULL,
+    adres varchar(50)  NOT NULL,
     telefon text  NOT NULL,
     CONSTRAINT pracownicy_pk PRIMARY KEY (id_pracownika)
 );
@@ -168,6 +168,7 @@ SELECT id_pracownika, nazwisko FROM pracownicy;
 SELECT pracownicy.id_pracownika FROM pracownicy, wynagrodzenie, pensja_stanowisko 
 WHERE pensja_stanowisko.kwota>1000::money AND pracownicy.id_pracownika=wynagrodzenie.pracownicy_id_pracownika 
 AND pensja_stanowisko.id_pensji=wynagrodzenie.pensja_stanowisko_id_pensji; 
+-- money - rzutowanie, zeby dalo porownac sie typ int i money
 --6c
 SELECT pracownicy.id_pracownika 
 FROM pracownicy, wynagrodzenie, premia, pensja_stanowisko 
@@ -254,6 +255,9 @@ group by pensja_stanowisko.stanowisko;
 --a
 UPDATE pracownicy 
 SET telefon='(+48)'::text || telefon;
+
+--b
+update pracownicy set telefon=SUBSTRING(telefon,0,8)||'-'||SUBSTRING(telefon,9,11)||'-'||SUBSTRING(telefon,12,14);
 
 --c
 SELECT UPPER(nazwisko)
